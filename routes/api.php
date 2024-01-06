@@ -27,5 +27,4 @@ Route::middleware('auth:sanctum')->get('/token', function (Request $request) {
     return $request->user()->createToken('api-token')->plainTextToken;
 });
 
-Route::apiResource('items', ItemController::class)->middleware('auth:sanctum');
-
+Route::middleware('auth:sanctum')->apiResource('movies', MovieController::class);
