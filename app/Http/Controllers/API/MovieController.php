@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Cache;
 
 class MovieController extends Controller
 {
@@ -14,7 +15,9 @@ class MovieController extends Controller
      */
     public function index()
     {
-        $movies = Movie::all();
+        $movies = Cache::remember('movies_list', 60, function () {
+            return Movie::all();
+        });
 
         if ($movies->isEmpty()) {
             return response()->json(['message' => 'No movies in the database'], 404);
@@ -50,6 +53,9 @@ class MovieController extends Controller
         }
 
         $item = Movie::create($request->all());
+
+        Cache::forget('movies_list'); // Czyszczenie cache
+
         return response()->json($item, 201);
     }
 
@@ -100,6 +106,7 @@ class MovieController extends Controller
             return response()->json(['message' => 'Movie not found'], 404);
         } else {
             $item->delete();
+            Cache::forget('movies_list'); // Czyszczenie cache
             return response()->json(['message' => "Movie $item->title was removed"], 200);
         }
     }
