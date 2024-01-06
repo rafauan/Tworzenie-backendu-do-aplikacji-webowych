@@ -93,6 +93,7 @@ class MovieController extends Controller
         
         $item = Movie::find($id);
         $item->update($request->all());
+        Cache::forget('movies_list');
         return response()->json($item, 200);
     }
 
