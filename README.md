@@ -14,6 +14,9 @@ Po pobraniu repozytorium należy wykonać następujące komendy:
  4. php artisan serve
 
 ## Lista endpointów
+
+Endpointy testujemy przy pomocy adresu **127.0.0.1:8000/api**
+
 Kolekcja User
  - /register (POST) - rejestracja użytkownika
  - /login (POST) - logowanie użytkownika
